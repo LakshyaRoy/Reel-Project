@@ -7,10 +7,12 @@ import { FaExternalLinkAlt } from "react-icons/fa";
 import Link from "next/link";
 const VideoCard = ({
   videoLink,
-  index,
+  videoId,
   videoContainerRef,
   isMuted,
   setIsMuted,
+  activeVideoId,
+  setActiveVideoId,
 }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [userPaused, setUserPaused] = useState(false);
@@ -25,13 +27,14 @@ const VideoCard = ({
     const observer = new IntersectionObserver(
       (entries) => {
         entries.forEach((entry) => {
-          console.log(entry);
+          // console.log(entry);
           if (entry.isIntersecting === true) {
             if (entry.intersectionRatio > 0) {
               videoRef.current.play().catch((error) => {
-                console.log("Video play failed:", error);
+                // console.log("Video play failed:", error);
               });
               setIsPlaying(true);
+              setActiveVideoId(videoId);
             }
           } else {
             videoRef.current.pause();
@@ -73,7 +76,7 @@ const VideoCard = ({
   const handleShare = async () => {
     try {
       // Convert relative path to absolute URL if needed
-      const absoluteUrl = new URL(videoLink?.videoUrl, window.location.origin)
+      const absoluteUrl = new URL(`/${activeVideoId}`, window.location.origin)
         .href;
 
       if (navigator.share) {
@@ -123,6 +126,7 @@ const VideoCard = ({
     <div
       ref={cardRef}
       className="relative w-full md:max-w-[504px] h-full  snap-start"
+      data-video-id={videoLink?.id}
     >
       <FaRegCirclePlay
         onClick={handleVideoPress}
