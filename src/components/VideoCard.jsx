@@ -180,28 +180,40 @@ const VideoCard = ({
         muted={isMuted}
       />
 
-      <div className=" absolute bottom-0 w-full block  md:hidden bg-black/50 text-white text-sm p-4 backdrop-blur-sm">
-        <div className="w-full flex justify-center items-start flex-col gap-3 relative ">
-          {" "}
-          <Link
-            href={videoLink?.link}
+      <div className="absolute bottom-0 w-full block md:hidden bg-black/50 text-white text-sm p-4 backdrop-blur-sm">
+        <div className="w-full flex justify-center items-start flex-col gap-3 relative">
+          {/* External link button - Changed to regular <a> tag */}
+          <a
+            href={videoLink?.link || "#"}
             target="_blank"
             rel="noopener noreferrer"
-            className="p-2 rounded-full bg-white/50 hover:bg-white/70  absolute top-1 right-1 cursor-pointer z-50"
+            className="p-2 rounded-full bg-white/50 hover:bg-white/70 absolute top-1 right-1 cursor-pointer z-50"
+            onClick={(e) => {
+              if (!videoLink?.link) {
+                e.preventDefault();
+                alert("No link available");
+              }
+            }}
           >
-            <FaExternalLinkAlt className="w-4 h-4" />
-          </Link>
-          {/* 4.5rem = right buttons width */}
+            <FaExternalLinkAlt className="w-4 h-4 text-black" />
+          </a>
+
           <Image
             src={videoLink?.brandLogo}
             alt="Brand Logo"
             width={100}
             height={100}
             className="w-16 h-16 rounded-full bg-white object-contain"
+            onError={(e) => {
+              e.target.style.display = "none"; // Hide image if error
+            }}
           />
-          <h1 className="font-bold line-clamp-1">{videoLink?.title}</h1>
+
+          <h1 className="font-bold line-clamp-1">
+            {videoLink?.title || "Untitled Product"}
+          </h1>
           <p className="mt-1 text-xs text-gray-200 line-clamp-2">
-            {videoLink?.subtitle}
+            {videoLink?.subtitle || "No description available"}
           </p>
         </div>
       </div>
