@@ -14,8 +14,26 @@
   }
 }
 
+html {
+  scroll-snap-type: y mandatory;
+}
+
 body {
   color: var(--foreground);
   background: var(--background);
   font-family: Arial, Helvetica, sans-serif;
+}
+
+.video_container {
+  overflow-y: scroll;
+  scroll-snap-type: y mandatory;
+}
+
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+
+.hide-scrollbar {
+  -ms-overflow-style: none; /* IE and Edge */
+  scrollbar-width: none; /* Firefox */
 }
